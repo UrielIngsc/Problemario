@@ -22,11 +22,51 @@ class NumeroComplejo{
     }
 
     public NumeroComplejo sumarNumerosComplejos(NumeroComplejo p_objNumeroComplejo) {
-        float resultadoParteReal = parteReal + p_objNumeroComplejo.getParteReal();
-        float resultadoParteImaginaria = parteImaginaria + p_objNumeroComplejo.getParteImaginaria();
+        float resultadoParteReal = parteReal + p_objNumeroComplejo.parteReal;
+        float resultadoParteImaginaria = parteImaginaria + p_objNumeroComplejo.parteImaginaria;
+
 
         NumeroComplejo objResultado = new NumeroComplejo(resultadoParteReal, resultadoParteImaginaria);
         return objResultado;
+    }
+
+    public NumeroComplejo restarNumerosComplejos(NumeroComplejo p_objNumeroComplejo) {
+        float resultadoParteReal = parteReal - p_objNumeroComplejo.parteReal;
+        float resultadoParteImaginaria = parteImaginaria - p_objNumeroComplejo.parteImaginaria;
+
+        NumeroComplejo objResultado = new NumeroComplejo(resultadoParteReal, resultadoParteImaginaria);
+        return objResultado;
+    }
+
+    public NumeroComplejo multiplicarNumerosComplejos(NumeroComplejo p_objNumeroComplejo){
+        float resultadoParteReal = ((parteReal*p_objNumeroComplejo.parteReal)+((parteImaginaria*p_objNumeroComplejo.parteImaginaria)*-1));
+        float resultadoParteImaginaria = ((parteReal*p_objNumeroComplejo.parteImaginaria)+(parteImaginaria*p_objNumeroComplejo.parteReal));
+
+        NumeroComplejo objResultado = new NumeroComplejo(resultadoParteReal, resultadoParteImaginaria);
+        return objResultado;
+    }
+
+    public NumeroComplejo dividirNumerosComplejos(NumeroComplejo p_objNumeroComplejo){
+        float conjugado = (p_objNumeroComplejo.parteImaginaria)*-1;
+        float divisor = (float)((Math.pow(p_objNumeroComplejo.parteReal, 2))+(Math.pow(p_objNumeroComplejo.parteImaginaria, 2)));
+
+        float resultadoParteReal = (((parteReal*p_objNumeroComplejo.parteReal)+((parteImaginaria*conjugado)*-1))/divisor);
+        float resultadoParteImaginaria = (((parteReal*conjugado)+(parteImaginaria*p_objNumeroComplejo.parteReal))/divisor);
+
+        resultadoParteReal = redondearDecimales(resultadoParteReal);
+
+        NumeroComplejo objResultado = new NumeroComplejo(resultadoParteReal, resultadoParteImaginaria);
+        return objResultado;
+    }
+
+    private float redondearDecimales(float numeroRedondear){
+        System.out.println("entre");
+        int parteEntera = (int) numeroRedondear;
+        String decimales = String.valueOf(numeroRedondear-parteEntera);
+
+        System.out.println(decimales);
+        return 0.0f;
+
     }
 
     NumeroComplejo(float p_parteReal, float p_parteImaginaria){
@@ -63,13 +103,21 @@ class Utilities{
             case "+":
                 objNumeroComplejoResultado = objNumeroComplejo1.sumarNumerosComplejos(objNumeroComplejo2);
                 break;
-        
+            case "-":
+                objNumeroComplejoResultado = objNumeroComplejo1.restarNumerosComplejos(objNumeroComplejo2);
+                break;
+            case "*":
+                objNumeroComplejoResultado = objNumeroComplejo1.multiplicarNumerosComplejos(objNumeroComplejo2);
+                break;
+            case "/":
+                objNumeroComplejoResultado = objNumeroComplejo1.dividirNumerosComplejos(objNumeroComplejo2);
+                break;
             default:
                 objNumeroComplejoResultado = new NumeroComplejo(0.0f, 0.0f);
                 break;
         }
 
-        System.out.println(objNumeroComplejoResultado.getParteReal() + " " + operador + objNumeroComplejoResultado.getParteImaginaria()+"i");
+        System.out.println(objNumeroComplejoResultado.getParteReal() + " " + objNumeroComplejoResultado.getParteImaginaria()+"i");
         input.close();
    }
 
