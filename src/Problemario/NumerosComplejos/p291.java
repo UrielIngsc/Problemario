@@ -6,24 +6,54 @@ import java.util.StringTokenizer;
 public class p291 {
     public static void main(String[] args) {
         Utilities utilidades = new Utilities();
-        utilidades.procesoPrincipal();
+        String operador;
+        Scanner input = new Scanner(System.in);
+        double parteReal1, parteReal2, parteImaginaria1, parteImaginaria2;
+        NumeroComplejo numeroComplejo1, numeroComplejo2, numeroComplejoResultado;
+
+        String datosNumeros = input.nextLine();
+        StringTokenizer sTokenizer = new StringTokenizer(datosNumeros);
+
+        parteReal1 = Double.parseDouble(sTokenizer.nextToken());
+        parteImaginaria1 = utilidades.obtenerValorParteImaginaria(sTokenizer.nextToken());
+
+        parteReal2 = Double.parseDouble(sTokenizer.nextToken());
+        parteImaginaria2 = utilidades.obtenerValorParteImaginaria(sTokenizer.nextToken());
+
+        operador = sTokenizer.nextToken();
+
+        numeroComplejo1 = new NumeroComplejo(parteReal1, parteImaginaria1);
+        numeroComplejo2 = new NumeroComplejo(parteReal2, parteImaginaria2);
+        numeroComplejoResultado = utilidades.llamarOperacionCompleja(numeroComplejo1, numeroComplejo2, operador);
+
+        utilidades.mostrarResultado(numeroComplejoResultado);
+
+        input.close();
     }
 }
 
 class NumeroComplejo{
-    private float parteReal;
-    private float parteImaginaria;
+    private double parteReal;
+    private double parteImaginaria;
 
-    public float getParteImaginaria() {
+    public double getParteImaginaria() {
         return parteImaginaria;
     }
-    public float getParteReal() {
+    public double getParteReal() {
         return parteReal;
     }
 
+    public void setParteImaginaria(double parteImaginaria) {
+        this.parteImaginaria = parteImaginaria;
+    }
+
+    public void setParteReal(double parteReal) {
+        this.parteReal = parteReal;
+    }
+
     public NumeroComplejo sumarNumerosComplejos(NumeroComplejo p_objNumeroComplejo) {
-        float resultadoParteReal = parteReal + p_objNumeroComplejo.parteReal;
-        float resultadoParteImaginaria = parteImaginaria + p_objNumeroComplejo.parteImaginaria;
+        double resultadoParteReal = parteReal + p_objNumeroComplejo.parteReal;
+        double resultadoParteImaginaria = parteImaginaria + p_objNumeroComplejo.parteImaginaria;
 
 
         NumeroComplejo objResultado = new NumeroComplejo(resultadoParteReal, resultadoParteImaginaria);
@@ -31,45 +61,36 @@ class NumeroComplejo{
     }
 
     public NumeroComplejo restarNumerosComplejos(NumeroComplejo p_objNumeroComplejo) {
-        float resultadoParteReal = parteReal - p_objNumeroComplejo.parteReal;
-        float resultadoParteImaginaria = parteImaginaria - p_objNumeroComplejo.parteImaginaria;
+        double resultadoParteReal = parteReal - p_objNumeroComplejo.parteReal;
+        double resultadoParteImaginaria = parteImaginaria - p_objNumeroComplejo.parteImaginaria;
 
         NumeroComplejo objResultado = new NumeroComplejo(resultadoParteReal, resultadoParteImaginaria);
         return objResultado;
     }
 
     public NumeroComplejo multiplicarNumerosComplejos(NumeroComplejo p_objNumeroComplejo){
-        float resultadoParteReal = ((parteReal*p_objNumeroComplejo.parteReal)+((parteImaginaria*p_objNumeroComplejo.parteImaginaria)*-1));
-        float resultadoParteImaginaria = ((parteReal*p_objNumeroComplejo.parteImaginaria)+(parteImaginaria*p_objNumeroComplejo.parteReal));
+        double resultadoParteReal = ((parteReal*p_objNumeroComplejo.parteReal)+((parteImaginaria*p_objNumeroComplejo.parteImaginaria)*-1));
+        double resultadoParteImaginaria = ((parteReal*p_objNumeroComplejo.parteImaginaria)+(parteImaginaria*p_objNumeroComplejo.parteReal));
 
         NumeroComplejo objResultado = new NumeroComplejo(resultadoParteReal, resultadoParteImaginaria);
         return objResultado;
     }
 
     public NumeroComplejo dividirNumerosComplejos(NumeroComplejo p_objNumeroComplejo){
-        float conjugado = (p_objNumeroComplejo.parteImaginaria)*-1;
-        float divisor = (float)((Math.pow(p_objNumeroComplejo.parteReal, 2))+(Math.pow(p_objNumeroComplejo.parteImaginaria, 2)));
+        double conjugado = (p_objNumeroComplejo.parteImaginaria)*-1;
+        double divisor = (double)((Math.pow(p_objNumeroComplejo.parteReal, 2))+(Math.pow(p_objNumeroComplejo.parteImaginaria, 2)));
 
-        float resultadoParteReal = (((parteReal*p_objNumeroComplejo.parteReal)+((parteImaginaria*conjugado)*-1))/divisor);
-        float resultadoParteImaginaria = (((parteReal*conjugado)+(parteImaginaria*p_objNumeroComplejo.parteReal))/divisor);
+        double resultadoParteReal = (((parteReal*p_objNumeroComplejo.parteReal)+((parteImaginaria*conjugado)*-1))/divisor);
+        double resultadoParteImaginaria = (((parteReal*conjugado)+(parteImaginaria*p_objNumeroComplejo.parteReal))/divisor);
 
-        resultadoParteReal = redondearDecimales(resultadoParteReal);
 
         NumeroComplejo objResultado = new NumeroComplejo(resultadoParteReal, resultadoParteImaginaria);
         return objResultado;
     }
 
-    private float redondearDecimales(float numeroRedondear){
-        System.out.println("entre");
-        int parteEntera = (int) numeroRedondear;
-        String decimales = String.valueOf(numeroRedondear-parteEntera);
+    
 
-        System.out.println(decimales);
-        return 0.0f;
-
-    }
-
-    NumeroComplejo(float p_parteReal, float p_parteImaginaria){
+    NumeroComplejo(double p_parteReal, double p_parteImaginaria){
         parteReal = p_parteReal;
         parteImaginaria = p_parteImaginaria;
     }
@@ -77,51 +98,33 @@ class NumeroComplejo{
 
 class Utilities{
 
-    public void procesoPrincipal() {
-        String operador;
-        Scanner input = new Scanner(System.in);
-        float parteReal1, parteReal2, parteImaginaria1, parteImaginaria2;
-        NumeroComplejo objNumeroComplejo1, objNumeroComplejo2, objNumeroComplejoResultado;
-
-        //Entrada de datos y segmentacion de los numeros complejos con su operador
-        String datosNumeros = input.nextLine();
-        StringTokenizer sTokenizer = new StringTokenizer(datosNumeros);
-
-        parteReal1 = Float.parseFloat(sTokenizer.nextToken());
-        parteImaginaria1 = obtenerValorParteImaginaria(sTokenizer.nextToken());
-
-        parteReal2 = Float.parseFloat(sTokenizer.nextToken());
-        parteImaginaria2 = obtenerValorParteImaginaria(sTokenizer.nextToken());
-
-        operador = sTokenizer.nextToken();
-
-        //Instacia de los numeros complejos
-        objNumeroComplejo1 = new NumeroComplejo(parteReal1, parteImaginaria1);
-        objNumeroComplejo2 = new NumeroComplejo(parteReal2, parteImaginaria2);
+   public NumeroComplejo llamarOperacionCompleja(NumeroComplejo numeroComplejo1, NumeroComplejo numeroComplejo2, String operador){
+        NumeroComplejo numeroComplejoResultado;
 
         switch (operador) {
             case "+":
-                objNumeroComplejoResultado = objNumeroComplejo1.sumarNumerosComplejos(objNumeroComplejo2);
+                numeroComplejoResultado = numeroComplejo1.sumarNumerosComplejos(numeroComplejo2);
                 break;
             case "-":
-                objNumeroComplejoResultado = objNumeroComplejo1.restarNumerosComplejos(objNumeroComplejo2);
+                numeroComplejoResultado = numeroComplejo1.restarNumerosComplejos(numeroComplejo2);
                 break;
             case "*":
-                objNumeroComplejoResultado = objNumeroComplejo1.multiplicarNumerosComplejos(objNumeroComplejo2);
+                numeroComplejoResultado = numeroComplejo1.multiplicarNumerosComplejos(numeroComplejo2);
                 break;
             case "/":
-                objNumeroComplejoResultado = objNumeroComplejo1.dividirNumerosComplejos(objNumeroComplejo2);
+                numeroComplejoResultado = numeroComplejo1.dividirNumerosComplejos(numeroComplejo2);
                 break;
             default:
-                objNumeroComplejoResultado = new NumeroComplejo(0.0f, 0.0f);
+                numeroComplejoResultado = new NumeroComplejo(0.0, 0.0);
                 break;
         }
+        numeroComplejoResultado.setParteReal(redondearDecimales(numeroComplejoResultado.getParteReal()));
+        numeroComplejoResultado.setParteImaginaria(redondearDecimales(numeroComplejoResultado.getParteImaginaria()));
 
-        System.out.println(objNumeroComplejoResultado.getParteReal() + " " + objNumeroComplejoResultado.getParteImaginaria()+"i");
-        input.close();
+        return numeroComplejoResultado;
    }
 
-   private float obtenerValorParteImaginaria(String parteImaginaria) {
+   public double obtenerValorParteImaginaria(String parteImaginaria) {
         String valorParteImaginaria = "";
         char cifraParteImaginaria;
         int index;
@@ -131,6 +134,41 @@ class Utilities{
             valorParteImaginaria = cifraParteImaginaria + valorParteImaginaria;
         }
         
-        return (Float.parseFloat(valorParteImaginaria));
+        return (Double.parseDouble(valorParteImaginaria));
    }
+
+   public void mostrarResultado(NumeroComplejo numeroComplejoResultado){
+        String operadorMostrar = " ";
+
+        if(numeroComplejoResultado.getParteImaginaria() >= 0.0){
+            operadorMostrar = " +";
+        }
+
+        System.out.println(numeroComplejoResultado.getParteReal() + operadorMostrar + numeroComplejoResultado.getParteImaginaria());
+   }
+
+    private double redondearDecimales(double numeroRedondear){
+        int index = 0;
+        char decimal;
+        boolean seRedondeoNumero = false;
+        String decimales = Double.toString(numeroRedondear);
+        String numeroRedondeado = "";
+
+        while (!seRedondeoNumero) {
+            decimal = decimales.charAt(index);
+
+            if(Character.compare(decimal, '.') != 0){
+                numeroRedondeado = decimal + numeroRedondeado;
+                index++;
+            }
+            else if(Character.compare(decimal, '.') == 0){
+                numeroRedondeado += decimal;
+                decimal = decimales.charAt((++index));
+                numeroRedondeado += decimal ;
+                seRedondeoNumero = true;
+            }
+            
+        }
+        return Double.parseDouble(numeroRedondeado);
+    }
 }
