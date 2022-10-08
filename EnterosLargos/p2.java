@@ -37,47 +37,19 @@ class EnteroLargo {
 
     public EnteroLargo sumarNumeros(EnteroLargo numeroEnteroLargo2) {
         Utilities utilidades = new Utilities();
-        int index = 0, carrie = 0, sumaCifras = 0;
-        char cifraNumeroEnteroLargo1, cifraNumeroEnteroLargo2;
-        boolean seTerminoSuma = false;
-        String sumaEnterosLargos = "", auxSumaCifras;
-
-        if(valorEnteroLargo.length() != numeroEnteroLargo2.valorEnteroLargo.length()){
-
+        String sumaEnterosLargos = "";
+        
+        if(utilidades.longitudNumerosIgual(valorEnteroLargo, numeroEnteroLargo2.valorEnteroLargo)){
+            sumaEnterosLargos = utilidades.realizarSumaEnterosLargos(valorEnteroLargo, numeroEnteroLargo2.valorEnteroLargo);
+        }
+        else{
             if(valorEnteroLargo.length() > numeroEnteroLargo2.valorEnteroLargo.length()){
-
                 numeroEnteroLargo2.valorEnteroLargo = utilidades.igualarLogitudNumeros(valorEnteroLargo, numeroEnteroLargo2.valorEnteroLargo);
             }else{
                 valorEnteroLargo = utilidades.igualarLogitudNumeros(valorEnteroLargo, numeroEnteroLargo2.valorEnteroLargo);
             }
-        }
 
-        index = (valorEnteroLargo.length()-1);
-        
-        while (!seTerminoSuma) {
-
-            cifraNumeroEnteroLargo1 = valorEnteroLargo.charAt(index);
-            cifraNumeroEnteroLargo2 = numeroEnteroLargo2.valorEnteroLargo.charAt(index);
-
-            sumaCifras = Character.getNumericValue(cifraNumeroEnteroLargo1) + Character.getNumericValue(cifraNumeroEnteroLargo2) + carrie;
-            auxSumaCifras = String.valueOf(sumaCifras);
-            
-            if(sumaCifras > 9 && index != 0){
-                carrie = 1;
-                sumaEnterosLargos = String.valueOf(auxSumaCifras.charAt(1)) + sumaEnterosLargos;
-            }else if(sumaCifras > 9 && index == 0){
-                carrie = 0;
-                sumaEnterosLargos = sumaCifras + sumaEnterosLargos;
-            }else{
-                carrie = 0;
-                sumaEnterosLargos = sumaCifras + sumaEnterosLargos;
-            }
-
-            if(index == 0){
-                seTerminoSuma = true;
-            }
-            
-            index--;
+            sumaEnterosLargos = utilidades.realizarSumaEnterosLargos(valorEnteroLargo, numeroEnteroLargo2.valorEnteroLargo);
         }
 
         EnteroLargo resultadoSumaEnteros = new EnteroLargo(sumaEnterosLargos);
@@ -108,5 +80,46 @@ class Utilities{
         }
 
         return numeroLongitudMenor;
+    }
+    public String realizarSumaEnterosLargos(String p_valEnteroLargo1, String p_valEnteroLargo2) {
+        int index = (p_valEnteroLargo1.length()-1), carrie = 0, sumaCifras = 0;
+        char cifraNumeroEnteroLargo1, cifraNumeroEnteroLargo2;
+        boolean seTerminoSuma = false;
+        String auxSumaCifras;
+        String sumaEnterosLargos = "";
+        
+        while (!seTerminoSuma) {
+            cifraNumeroEnteroLargo1 = p_valEnteroLargo1.charAt(index);
+            cifraNumeroEnteroLargo2 = p_valEnteroLargo2.charAt(index);
+
+            sumaCifras = Character.getNumericValue(cifraNumeroEnteroLargo1) + Character.getNumericValue(cifraNumeroEnteroLargo2) + carrie;
+            auxSumaCifras = String.valueOf(sumaCifras);
+            
+            if(sumaCifras > 9 && index != 0){
+                carrie = 1;
+                sumaEnterosLargos = String.valueOf(auxSumaCifras.charAt(1)) + sumaEnterosLargos;
+            }else if(sumaCifras > 9 && index == 0){
+                carrie = 0;
+                sumaEnterosLargos = sumaCifras + sumaEnterosLargos;
+            }else{
+                carrie = 0;
+                sumaEnterosLargos = sumaCifras + sumaEnterosLargos;
+            }
+
+            if(index == 0){
+                seTerminoSuma = true;
+            } 
+            index--;
+        }
+        return sumaEnterosLargos;
+    }
+
+    public boolean longitudNumerosIgual(String p_valEnteroLargo1, String p_valEnteroLargo2){
+        if(p_valEnteroLargo1.length() == p_valEnteroLargo2.length()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
